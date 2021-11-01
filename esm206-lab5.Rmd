@@ -63,7 +63,56 @@ There is no significant different in ranks between group 1 and group 2 (statisti
 
 Median scores for group 1 (M = 14) and group 2 (M = 12) did not differ signficantly (U(df) = 86, p = 0.28).
 
-```{r}
+kruskal.test() for rank based test with more than 2 groups
 
+## Linear regression
+Simple linear regression (single dependent variable, a single independent variable)
+
+```{r}
+# make an exploratory plot of penguin body mass (y) vs. flipper length (x)
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  geom_smooth(method = "lm") # adding a trendline
 ```
+
+Find a linear regression model using ordinary least squares describing the relationship between flipper length and body mass for these penguins. 
+
+3 pieces:
+- what type of model?
+- what is the relationship to model (Dependent variable (y) as a function of Independent variable (x)
+- where is the data that's used to create this model?
+
+lm() for simple linear models
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+```
+
+y = mx + b 
+Body mass = 49.7(flipper_length) - 5780.8
+
+Which means I expect a 1mm increase in flipper length to be associated with a 49.7g increase in body mass.
+
+penguin_lm$coefficients[2] to pull out a specific value from the vector
+
+### broom package returns model outputs as tidy data frames
+
+```{r}
+penguin_lm_tidy <- tidy(penguin_lm)
+# glance gets you model-wide measures of uncertainty, to be continued...
+glance(penguin_lm)
+```
+
+How can I actually include my model equation in a report?
+
+```{r}
+extract_eq(model = penguin_lm, use_coefs = TRUE) # this makes a nice knitted lineer model equation that is dank and reproducible
+```
+
+plot() function to visualize linear models
+```{r}
+plot(penguin_lm)
+```
+
+
 
