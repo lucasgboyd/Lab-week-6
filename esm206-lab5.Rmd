@@ -5,9 +5,65 @@ date: "11/1/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(here)
-library()
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(equatiomatic)
+```
+
+## example of a rank-based test
+
+We'll make our own samples, using a pseudo-random generator.
+
+```{r}
+set.seed(1414)
+# create a sample of integer values (max value, number of values, replace is whether numbers can repeat)
+gp_1 <- sample.int(20, size = 15, replace = TRUE) # create a sample of integer values (max value, number of values, replace is whether numbers can repeat)
+
+set.seed(1424)
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+```
+Quick histograms for exploratory purposes.
+```{r}
+hist(gp_1)
+
+hist(gp_2)
+
+```
+
+
+Try a t-test. 
+
+```{r}
+t.test(gp_1, gp_2)
+```
+
+This p-value means if these samples were drawn from populations with the same mean, there is a 19.8 percent chance that we would have found a difference of sample means at least this large by random chance. 
+
+Retain (fail to reject) the null hypothesis! There is no significant difference in means between group 1 and group 2. 
+
+Now let's compare this outcome with a rank-based test.
+
+## Mann Whitney U unpaired rank-based test
+
+```{r}
+mwu <- wilcox.test(gp_1, gp_2)
+
+mwu
+```
+
+The p value means that 
+
+if these samples were drawn from populations with the same ranks (medians), the probability of finding two samples with ranks at least as different as those in our samples is 28%.
+
+There is no significant different in ranks between group 1 and group 2 (statistical summary).
+
+Median scores for group 1 (M = 14) and group 2 (M = 12) did not differ signficantly (U(df) = 86, p = 0.28).
+
+```{r}
+
 ```
 
